@@ -1,52 +1,42 @@
-import { serve } from "bun";
+import { Hono } from "hono";
 import sharp from "sharp";
 
-const server = serve({
-  port: 3000,
+const app = new Hono();
 
-  routes: {
-    "/": (req) => {
-      return new Response("Hello, World!", {
-        headers: {
-          "Content-Type": "text/plain",
-        },
-      });
-    },
-    "/:width/:height": async (req) => {
-      const { width, height } = req.params;
-      try {
-        const imageBuffer = await sharp({
-          create: {
-            width: Number(width),
-            height: Number(height),
-            channels: 3,
-            background: {
-              r: Math.floor(Math.random() * 256),
-              g: Math.floor(Math.random() * 256),
-              b: Math.floor(Math.random() * 256),
-            },
-          },
-        })
-          .png()
-          .toBuffer();
+const welcomeStrings = [
+  "Hello Hono!",
+  "To learn more about Hono on Vercel, visit https://vercel.com/docs/frameworks/backend/hono",
+];
 
-        return new Response(imageBuffer, {
-          headers: {
-            "Content-Type": "image/png",
-            "Cache-Control": "public, max-age=86400",
-          },
-        });
-      } catch (error) {
-        return new Response("Error generating image", { status: 500 });
-      }
-    },
-  },
-
-  // (optional) fallback for unmatched routes:
-  // Required if Bun's version < 1.2.3
-  fetch(req) {
-    return new Response("Not Found", { status: 404 });
-  },
+app.get("/", (c) => {
+  return c.text(welcomeStrings.join("\n\n"));
 });
 
-console.log(`🚀 Picsum server is started: http://localhost:${server.port}`);
+app.get("/:width/:height?", async (c) => {
+  const { width, height } = c.req.param();
+  try {
+    const imageBuffer = await sharp({
+      create: {
+        width: Number(width),
+        height: Number(height || width),
+        channels: 3,
+        background: {
+          r: Math.floor(Math.random() * 256),
+          g: Math.floor(Math.random() * 256),
+          b: Math.floor(Math.random() * 256),
+        },
+      },
+    })
+      .png()
+      .toBuffer();
+
+    return c.body(new Uint8Array(imageBuffer), 200, {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=86400",
+    });
+  } catch {
+    return c.text("Image processing failed.", 500);
+  }
+});
+
+export default app;
