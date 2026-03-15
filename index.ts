@@ -4,7 +4,7 @@ import sharp from "sharp";
 
 const app = new Hono();
 
-app.get("/", serveStatic({ path: "./index.html" }));
+app.get("/", serveStatic({ path: "./public/index.html" }));
 
 app.use("/favicon.ico", serveStatic({ path: "./public/picsum.svg" }));
 
