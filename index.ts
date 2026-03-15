@@ -4,14 +4,7 @@ import sharp from "sharp";
 
 const app = new Hono();
 
-const welcomeStrings = [
-  "Hello Hono!",
-  "To learn more about Hono on Vercel, visit https://vercel.com/docs/frameworks/backend/hono",
-];
-
-app.get("/", (c) => {
-  return c.text(welcomeStrings.join("\n\n"));
-});
+app.get("/", serveStatic({ path: "./index.html" }));
 
 app.use("/favicon.ico", serveStatic({ path: "./public/picsum.svg" }));
 
@@ -40,6 +33,10 @@ app.get("/:width/:height?", async (c) => {
   } catch {
     return c.text("Image processing failed.", 500);
   }
+});
+
+app.notFound((c) => {
+  return c.redirect("/", 302);
 });
 
 export default app;
