@@ -13,7 +13,7 @@ app.get("/", (c) => {
   return c.text(welcomeStrings.join("\n\n"));
 });
 
-app.use("/favicon.ico", serveStatic({ path: "./picsum.svg" }));
+app.use("/favicon.ico", serveStatic({ path: "./public/picsum.svg" }));
 
 app.get("/:width/:height?", async (c) => {
   const { width, height } = c.req.param();
