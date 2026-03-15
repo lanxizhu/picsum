@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { serveStatic } from "hono/bun";
 import sharp from "sharp";
 
 const app = new Hono();
@@ -11,6 +12,8 @@ const welcomeStrings = [
 app.get("/", (c) => {
   return c.text(welcomeStrings.join("\n\n"));
 });
+
+app.use("/favicon.ico", serveStatic({ path: "./picsum.svg" }));
 
 app.get("/:width/:height?", async (c) => {
   const { width, height } = c.req.param();
