@@ -10,6 +10,8 @@ app.use("/favicon.ico", serveStatic({ path: "./public/picsum.svg" }));
 
 app.get("/:width/:height?", async (c) => {
   const { width, height } = c.req.param();
+  const { text } = c.req.query();
+
   try {
     const imageBuffer = await sharp({
       create: {
@@ -23,6 +25,16 @@ app.get("/:width/:height?", async (c) => {
         },
       },
     })
+      .composite([
+        {
+          input: Buffer.from(
+            `<svg width="${width}" height="${height || width}">
+            <text x="50%" y="50%" font-size="32" fill="white" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${text || `${width}*${height || width}`}</text>
+          </svg>`,
+          ),
+          gravity: "center",
+        },
+      ])
       .png()
       .toBuffer();
 
