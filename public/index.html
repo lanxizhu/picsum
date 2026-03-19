@@ -693,8 +693,14 @@
         const width = demoWidth.value || 400;
         const height = demoHeight.value || 300;
         const text = encodeURIComponent(demoText.value || "");
-        const color = demoColor.value.replace("#", "%23");
-        const url = `/${width}/${height}${text ? "?text=" + text + "&color=" + color : "?color=" + color}`;
+
+        const params = new URLSearchParams({
+          ...(text && { text }),
+          ...(demoColor.value && { color: demoColor.value }),
+          timestamp: Date.now(),
+        });
+
+        const url = `/${width}/${height}?${params.toString()}`;
 
         demoImage.src = url;
         demoUrl.value = url;
