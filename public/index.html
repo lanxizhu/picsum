@@ -32,7 +32,7 @@
     <meta name="theme-color" content="#0f172a" />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="/favicon.ico" />
-    <link rel="canonical" href="https://picsum.vercel.app/" />
+    <link rel="canonical" href="https://picsum-eg.vercel.app/" />
     <style>
       :root {
         --bg: #0f172a;
@@ -570,7 +570,15 @@
             />
           </div>
           <div class="demo-input">
-            <label for="demo-color">背景色</label>
+            <label
+              for="demo-color"
+              title="文字颜色为背景色的反色（RGB 各通道取反）"
+              >背景色
+
+              <span style="font-size: 10px; color: var(--muted)">
+                文字颜色为背景色的反色
+              </span>
+            </label>
             <input id="demo-color" type="color" value="#3b82f6" />
           </div>
         </div>
