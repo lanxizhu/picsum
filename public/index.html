@@ -261,7 +261,7 @@
         font-weight: 500;
       }
 
-      .demo-input input {
+      .demo-input input:not([type="color"]) {
         padding: 8px 12px;
         border: 1px solid var(--line);
         background: rgba(2, 6, 23, 0.6);
@@ -269,6 +269,16 @@
         border-radius: 8px;
         font-family: inherit;
         font-size: 14px;
+        transition: border-color 0.2s ease;
+      }
+
+      .demo-input input[type="color"] {
+        height: 38px;
+        padding: 2px 4px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(2, 6, 23, 0.6);
+        cursor: pointer;
         transition: border-color 0.2s ease;
       }
 
