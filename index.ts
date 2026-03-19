@@ -1,11 +1,17 @@
+import { file } from "bun";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import opentype from "opentype.js";
 import sharp from "sharp";
-
-const font = await opentype.load("./fonts/Roboto-Regular.ttf");
+import fontPath from "./fonts/Roboto-Regular.ttf";
 
 const app = new Hono();
+
+const fontFile = file(fontPath);
+
+const fontData = await fontFile.arrayBuffer();
+
+const font = opentype.parse(fontData);
 
 app.get("/", serveStatic({ path: "./public/index.html" }));
 
