@@ -7,13 +7,15 @@
     "dev": "bun run --hot index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/opentype.js": "^1.3.4"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "hono": "^4.12.8",
+    "opentype.js": "^1.3.4",
     "sharp": "^0.34.5"
   }
 }
